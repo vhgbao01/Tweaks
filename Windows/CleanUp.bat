@@ -1,5 +1,5 @@
 @echo off
-:: https://privacy.sexy — v0.13.7 — Wed, 15 Jan 2025 15:26:00 GMT
+
 :: Ensure PowerShell is available
 where PowerShell >nul 2>&1 || (
     echo PowerShell is not available. Please install or enable PowerShell.
