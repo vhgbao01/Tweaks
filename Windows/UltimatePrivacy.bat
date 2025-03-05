@@ -3605,15 +3605,6 @@ PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\SOFTWAR
 
 
 :: ----------------------------------------------------------
-:: --Disable automatic installation of WebView and WebView2--
-:: ----------------------------------------------------------
-echo --- Disable automatic installation of WebView and WebView2
-:: Set the registry value: "HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate!Install{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}"
-PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate'; $data = '0'; reg add 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate' /v 'Install{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}' /t 'REG_DWORD' /d "^""$data"^"" /f"
-:: ----------------------------------------------------------
-
-
-:: ----------------------------------------------------------
 :: ----Disable sharing scanned software data with Google-----
 :: ----------------------------------------------------------
 echo --- Disable sharing scanned software data with Google

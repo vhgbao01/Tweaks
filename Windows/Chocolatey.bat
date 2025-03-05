@@ -14,58 +14,71 @@ fltmc >nul 2>&1 || (
 setlocal EnableExtensions DisableDelayedExpansion
 
 
+
 :: ----------------------------------------------------------
 :: ----------Install Chocolatey------------------------------
 :: ----------------------------------------------------------
 echo --- Install Chocolatey
 PowerShell Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+PowerShell refreshenv
+PowerShell Set-ExecutionPolicy RemoteSigned
+
 
 
 :: ----------------------------------------------------------
 :: ----------Install essential packages----------------------
 :: ----------------------------------------------------------
 echo --- Install choco-cleaner
-choco install choco-cleaner -y
+choco upgrade choco-cleaner -y
 
 echo --- Install gsudo
-choco install gsudo -y
+choco upgrade gsudo -y
+
+echo --- Install directx
+choco upgrade directx -y
+
+echo --- Install winrar
+choco upgrade winrar -y
 
 echo --- Install 7zip
-choco install 7zip -y
+choco upgrade 7zip -y
 
 echo --- Install k-lite codec pack full
-choco install k-litecodecpackfull -y
+choco upgrade k-litecodecpackfull -y
+
 
 
 :: ----------------------------------------------------------
 :: ----------Install developer packages----------------------
 :: ----------------------------------------------------------
 echo --- Install PSReadline
-Powershell Install-Module -Name PSReadLine -force
+Powershell Install-Module -Name PSReadLine -Force -Confirm:$False
 
 echo --- Install python
-choco install python -y
+choco upgrade python -y
 
 echo --- Install nodejs
-choco install nodejs-lts -y
+choco upgrade nodejs-lts -y
 
 echo --- Install dotnet-sdk
-choco install dotnet-sdk -y
-
-echo --- Install golang
-choco install golang -y
-
-echo --- Install github
-choco install github-desktop -y
+choco upgrade dotnet-sdk -y
 
 echo --- Install vscode
-choco install vscode -y
+choco upgrade vscode -y
+
+echo --- Install github
+choco upgrade github-desktop -y
+
+echo --- Install Windows Subsystem for Linux 2
+choco upgrade wsl2 -y
 
 echo --- Install docker-desktop
-choco install docker-desktop -y
+choco upgrade docker-desktop -y
 
-echo --- Install mobaxterm
-choco install mobaxterm -y
+echo --- Install Visual Studio 2022 Build Tools
+choco upgrade visualstudio2022community --package-parameters "--add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended" -y
+
+
 
 :: Pause the script to view the final state
 pause
