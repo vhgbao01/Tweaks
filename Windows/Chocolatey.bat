@@ -37,6 +37,9 @@ choco upgrade gsudo -y
 echo --- Install directx
 choco upgrade directx -y
 
+echo --- Install Microsoft Visual C++ Runtime
+choco upgrade vcredist-all -y
+
 echo --- Install winrar
 choco upgrade winrar -y
 
@@ -66,7 +69,8 @@ choco upgrade dotnet-sdk -y
 echo --- Install vscode
 choco upgrade vscode -y
 
-echo --- Install github
+echo --- Install git and github
+choco upgrade git -y
 choco upgrade github-desktop -y
 
 echo --- Install Windows Subsystem for Linux 2
@@ -76,7 +80,7 @@ echo --- Install docker-desktop
 choco upgrade docker-desktop -y
 
 echo --- Install Visual Studio 2022 Build Tools
-choco upgrade visualstudio2022community --package-parameters "--add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended" -y
+choco upgrade visualstudio2022community --package-parameters "--add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended" -y --timeout 0
 
 
 

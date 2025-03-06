@@ -3581,30 +3581,6 @@ PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\SOFTWAR
 
 
 :: ----------------------------------------------------------
-:: ----------Disable automatic installation of Edge----------
-:: ----------------------------------------------------------
-echo --- Disable automatic installation of Edge
-:: Set the registry value: "HKLM\SOFTWARE\Microsoft\EdgeUpdate!DoNotUpdateToEdgeWithChromium"
-PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\SOFTWARE\Microsoft\EdgeUpdate'; $data = '1'; reg add 'HKLM\SOFTWARE\Microsoft\EdgeUpdate' /v 'DoNotUpdateToEdgeWithChromium' /t 'REG_DWORD' /d "^""$data"^"" /f"
-:: ----------------------------------------------------------
-
-
-:: Disable automatic installation of Edge across all channels
-echo --- Disable automatic installation of Edge across all channels
-:: Set the registry value: "HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate!InstallDefault"
-PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate'; $data = '0'; reg add 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate' /v 'InstallDefault' /t 'REG_DWORD' /d "^""$data"^"" /f"
-:: Set the registry value: "HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate!Install{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}"
-PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate'; $data = '0'; reg add 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate' /v 'Install{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}' /t 'REG_DWORD' /d "^""$data"^"" /f"
-:: Set the registry value: "HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate!Install{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}"
-PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate'; $data = '0'; reg add 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate' /v 'Install{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}' /t 'REG_DWORD' /d "^""$data"^"" /f"
-:: Set the registry value: "HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate!Install{65C35B14-6C1D-4122-AC46-7148CC9D6497}"
-PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate'; $data = '0'; reg add 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate' /v 'Install{65C35B14-6C1D-4122-AC46-7148CC9D6497}' /t 'REG_DWORD' /d "^""$data"^"" /f"
-:: Set the registry value: "HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate!Install{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}"
-PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate'; $data = '0'; reg add 'HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate' /v 'Install{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}' /t 'REG_DWORD' /d "^""$data"^"" /f"
-:: ----------------------------------------------------------
-
-
-:: ----------------------------------------------------------
 :: ----Disable sharing scanned software data with Google-----
 :: ----------------------------------------------------------
 echo --- Disable sharing scanned software data with Google
