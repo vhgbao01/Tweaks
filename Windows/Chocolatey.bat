@@ -34,19 +34,19 @@ choco upgrade choco-cleaner -y
 echo --- Install gsudo
 choco upgrade gsudo -y
 
-echo --- Install directx
+echo --- Install DirectX End-User Runtime
 choco upgrade directx -y
 
 echo --- Install Microsoft Visual C++ Runtime
 choco upgrade vcredist-all -y
 
-echo --- Install winrar
+echo --- Install Winrar
 choco upgrade winrar -y
 
 echo --- Install 7zip
 choco upgrade 7zip -y
 
-echo --- Install k-lite codec pack full
+echo --- Install K-Lite Codec Pack Full
 choco upgrade k-litecodecpackfull -y
 
 
@@ -57,30 +57,36 @@ choco upgrade k-litecodecpackfull -y
 echo --- Install PSReadline
 Powershell Install-Module -Name PSReadLine -Force -Confirm:$False
 
-echo --- Install python
+echo --- Install Python3
 choco upgrade python -y
 
-echo --- Install nodejs
+echo --- Install NodeJS
 choco upgrade nodejs-lts -y
 
-echo --- Install dotnet-sdk
+echo --- Install .NET SDK
 choco upgrade dotnet-sdk -y
 
-echo --- Install vscode
+echo --- Install Visual Studio Code
 choco upgrade vscode -y
 
-echo --- Install git and github
+echo --- Install Git and Github Desktop
 choco upgrade git -y
 choco upgrade github-desktop -y
 
-echo --- Install Windows Subsystem for Linux 2
+echo --- Install WSL2 and Docker Desktop
 choco upgrade wsl2 -y
-
-echo --- Install docker-desktop
 choco upgrade docker-desktop -y
 
-echo --- Install Visual Studio 2022 Build Tools
+echo --- Install Visual Studio 2022 (Desktop development with C++ workload)
 choco upgrade visualstudio2022community --package-parameters "--add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended" -y --timeout 0
+
+
+
+:: ----------------------------------------------------------
+:: ----------Install developer packages----------------------
+:: ----------------------------------------------------------
+echo --- Upgrade all
+choco upgrade all -y
 
 
 
