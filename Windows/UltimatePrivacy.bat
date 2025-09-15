@@ -1596,13 +1596,6 @@ PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\Softwar
 :: ----------------------------------------------------------
 
 
-:: Remove "Program Compatibility" tab from file properties (context menu)
-echo --- Remove "Program Compatibility" tab from file properties (context menu)
-:: Set the registry value: "HKLM\Software\Policies\Microsoft\Windows\AppCompat!DisablePropPage"
-PowerShell -ExecutionPolicy Unrestricted -Command "$registryPath = 'HKLM\Software\Policies\Microsoft\Windows\AppCompat'; $data = '1'; reg add 'HKLM\Software\Policies\Microsoft\Windows\AppCompat' /v 'DisablePropPage' /t 'REG_DWORD' /d "^""$data"^"" /f"
-:: ----------------------------------------------------------
-
-
 :: Disable Steps Recorder (collects screenshots, mouse/keyboard input and UI data)
 echo --- Disable Steps Recorder (collects screenshots, mouse/keyboard input and UI data)
 :: Set the registry value: "HKLM\Software\Policies\Microsoft\Windows\AppCompat!DisableUAR"
