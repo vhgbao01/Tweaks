@@ -8,7 +8,7 @@ DISM /Online /Cleanup-Image /ScanHealth
 
 DISM /Online /Cleanup-Image /RestoreHealth
 
-DISM /Online /Cleanup-Image /StartComponentCleanup /ResetBase
+DISM /Online /Cleanup-Image /StartComponentCleanup
 
 SFC /scannow
 
