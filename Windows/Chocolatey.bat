@@ -19,58 +19,47 @@ setlocal EnableExtensions DisableDelayedExpansion
 :: ----------Install Chocolatey------------------------------
 :: ----------------------------------------------------------
 echo --- Install Chocolatey
-PowerShell Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-PowerShell refreshenv
-PowerShell Set-ExecutionPolicy RemoteSigned
+PowerShell -NoProfile -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+call refreshenv
+PowerShell -NoProfile -Command "Set-ExecutionPolicy RemoteSigned -Force"
+echo.
 
-set /p confirm="Do you want to install Chocolatey Helper? (y/n): "
+set /p confirm="Do you want to install Chocolatey helpers (GUI, cleaner, gsudo)? (y/n): "
 if /i "%confirm%"=="y" (
-    echo --- Install Chocolatey GUI
-    choco upgrade chocolateygui -y
-
-    echo --- Install choco-cleaner
-    choco upgrade choco-cleaner -y
-
-    echo --- Install gsudo
-    choco upgrade gsudo -y
+    echo --- Install Chocolatey helpers
+    choco upgrade chocolateygui choco-cleaner gsudo -y --no-progress
 ) else (
-    echo Skipping Chocolatey Helper installation.
+    echo Skipping Chocolatey helpers.
 )
+echo.
 
 
 
 :: ----------------------------------------------------------
 :: ----------Install system packages-------------------------
 :: ----------------------------------------------------------
-set /p confirm="Do you want to install system packages? (y/n): "
+set /p confirm="Do you want to install system runtime packages (DirectX, VC++ Redist)? (y/n): "
 if /i "%confirm%"=="y" (
-    echo --- Install DirectX End-User Runtime
-    choco upgrade directx -y
-
-    echo --- Install Microsoft Visual C++ Runtime
-    choco upgrade vcredist-all -y
+    echo --- Install system runtimes
+    choco upgrade directx vcredist-all -y --no-progress
 ) else (
-    echo Skipping system packages installation.
+    echo Skipping system packages.
 )
+echo.
 
 
 
 :: ----------------------------------------------------------
 :: ----------Install multimedia packages---------------------
 :: ----------------------------------------------------------
-set /p confirm="Do you want to install multimedia and archiving packages? (y/n): "
+set /p confirm="Do you want to install multimedia and archiving packages (K-Lite, WinRAR)? (y/n): "
 if /i "%confirm%"=="y" (
-    echo --- Install K-Lite Codec Pack Full
-    choco upgrade k-litecodecpackfull -y
-
-    echo --- Install Winrar
-    choco upgrade winrar -y
-
-    echo --- Install 7zip
-    choco upgrade 7zip -y
+    echo --- Install multimedia and archiving tools
+    choco upgrade k-litecodecpackfull winrar -y --no-progress
 ) else (
-    echo Skipping multimedia and archiving packages installation.
+    echo Skipping multimedia packages.
 )
+echo.
 
 
 
@@ -79,77 +68,47 @@ if /i "%confirm%"=="y" (
 :: ----------------------------------------------------------
 set /p confirm="Do you want to install developer packages? (y/n): "
 if /i "%confirm%"=="y" (
-    @REM echo --- Install PSReadline
-    @REM Powershell Install-Module -Name PSReadLine -Force -Confirm:$False
+    echo --- Install PSReadLine
+    PowerShell -NoProfile -Command "Install-Module -Name PSReadLine -Force -Confirm:$false -ErrorAction SilentlyContinue"
+    echo.
 
-    set /p subconfirm="Do you want to core developer packages? (y/n): "
+    set /p subconfirm="Install core dev tools (VSCode, Git, GitHub Desktop, Python, Node.js LTS, .NET SDK)? (y/n): "
     if /i "%subconfirm%"=="y" (
-        echo --- Install Visual Studio Code
-        choco upgrade vscode -y
-
-        echo --- Install Git and Github Desktop
-        choco upgrade git -y
-        choco upgrade github-desktop -y
-
-        echo --- Install Python
-        choco upgrade python -y
-
-        echo --- Install Node.js (LTS)
-        choco upgrade nodejs-lts -y
-
-        echo --- Install .NET SDK
-        choco upgrade dotnet-sdk -y
+        echo --- Install core dev tools
+        choco upgrade vscode git github-desktop python nodejs.lts dotnet-sdk -y --no-progress
     ) else (
-        echo Skipping core developer packages installation.
+        echo Skipping core dev tools.
     )
+    echo.
 
-    set /p subconfirm="Do you want to install Virtualization packages? (heavy,slow) (Y/n): "
-    if /i "%subconfirm%"=="Y" (
+    set /p subconfirm="Install virtualization packages (Docker Desktop, WSL2)? Warning: These are heavy and slow. (y/n): "
+    if /i "%subconfirm%"=="y" (
         echo --- Install Docker Desktop
-        choco upgrade docker-desktop -y
+        choco upgrade docker-desktop -y --no-progress
 
-        echo --- Install WSL2
-        choco upgrade wsl2 -y
+        echo --- Install WSL2 via Windows feature (recommended over choco)
+        PowerShell -NoProfile -Command "wsl --install --no-distribution" 2>nul || (
+            echo WSL2 install via wsl --install failed, falling back to choco...
+            choco upgrade wsl2 -y --no-progress
+        )
     ) else (
-        echo Skipping virtualization packages installation.
+        echo Skipping virtualization packages.
     )
-
-    set /p subconfirm="Do you want to install Visual Studio 2022? (heavy,slow) (Y/n): "
-    if /i "%subconfirm%"=="Y" (
-        echo --- Install Visual Studio 2022 (Desktop development with C++ workload)
-        choco upgrade visualstudio2022community --package-parameters "--add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended" -y --timeout 0
-    ) else (
-        echo Skipping Visual Studio 2022 installation.
-    )
-
-    set /p subconfirm="Do you want to install additional tools and utilities? (y/n): "
-    if /i "%subconfirm%"=="y" (
-        echo --- Install Notepad++
-        choco upgrade notepadplusplus -y
-
-        echo --- Install ffmpeg
-        choco upgrade ffmpeg -y
-    ) else (
-        echo Skipping additional tools and utilities installation.
-    )
-     
 ) else (
-    echo Skipping developer packages installation.
+    echo Skipping developer packages.
 )
+echo.
 
 
 
 :: ----------------------------------------------------------
-:: ----------Update packages---------------------------------
+:: ----------Upgrade all packages----------------------------
 :: ----------------------------------------------------------
-echo --- Upgrade all packages
-choco upgrade all -y
+echo --- Upgrading all installed Chocolatey packages...
+choco upgrade all -y --no-progress
+echo.
 
-
-
-:: Pause the script to view the final state
+:: Pause to view result
 pause
-:: Restore previous environment settings
 endlocal
-:: Exit the script successfully
 exit /b 0
