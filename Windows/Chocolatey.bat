@@ -24,7 +24,7 @@ call refreshenv
 PowerShell -NoProfile -Command "Set-ExecutionPolicy RemoteSigned -Force"
 echo.
 
-set /p confirm="Do you want to install Chocolatey helpers (GUI, cleaner, gsudo)? (y/n): "
+set /p confirm="Do you want to install Chocolatey helpers (GUI, cleaner, sudo)? (y/n): "
 if /i "%confirm%"=="y" (
     echo --- Install Chocolatey helpers
     choco upgrade chocolateygui choco-cleaner gsudo -y --no-progress
@@ -52,10 +52,10 @@ echo.
 :: ----------------------------------------------------------
 :: ----------Install multimedia packages---------------------
 :: ----------------------------------------------------------
-set /p confirm="Do you want to install multimedia and archiving packages (K-Lite, WinRAR)? (y/n): "
+set /p confirm="Do you want to install multimedia and archiving packages (K-Lite, WinRAR, 7zip)? (y/n): "
 if /i "%confirm%"=="y" (
     echo --- Install multimedia and archiving tools
-    choco upgrade k-litecodecpackfull winrar -y --no-progress
+    choco upgrade k-litecodecpackfull winrar 7zip -y --no-progress
 ) else (
     echo Skipping multimedia packages.
 )
