@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# https://privacy.sexy — v0.13.7 — Mon, 13 Jan 2025 15:16:55 GMT
+# https://privacy.sexy — v0.13.8 — Sun, 17 May 2026 03:06:52 GMT
 if [ "$EUID" -ne 0 ]; then
   script_path=$([[ "$0" = /* ]] && echo "$0" || echo "$PWD/${0#./}")
   sudo "$script_path" || (
@@ -45,121 +45,6 @@ else
     fi
   fi
 fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# --------------------Clear bash history--------------------
-# ----------------------------------------------------------
-echo '--- Clear bash history'
-rm -fv ~/.bash_history
-sudo rm -fv /root/.bash_history
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# --------------------Clear Zsh history---------------------
-# ----------------------------------------------------------
-echo '--- Clear Zsh history'
-rm -fv ~/.zsh_history
-sudo rm -fv /root/.zsh_history
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# --------------------Clear tcsh history--------------------
-# ----------------------------------------------------------
-echo '--- Clear tcsh history'
-rm -fv ~/.history
-sudo rm -fv /root/.history
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# --------------------Clear fish history--------------------
-# ----------------------------------------------------------
-echo '--- Clear fish history'
-rm -fv ~/.local/share/fish/fish_history
-sudo rm -fv /root/.local/share/fish/fish_history
-rm -fv ~/.config/fish/fish_history
-sudo rm -fv /root/.config/fish/fish_history
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# --------------Clear KornShell (ksh) history---------------
-# ----------------------------------------------------------
-echo '--- Clear KornShell (ksh) history'
-rm -fv ~/.sh_history
-sudo rm -fv /root/.sh_history
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# --------------------Clear ash history---------------------
-# ----------------------------------------------------------
-echo '--- Clear ash history'
-rm -fv ~/.ash_history
-sudo rm -fv /root/.ash_history
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# -------------------Clear crosh history--------------------
-# ----------------------------------------------------------
-echo '--- Clear crosh history'
-rm -fv ~/.crosh_history
-sudo rm -fv /root/.crosh_history
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# -------------Clear LibreOffice usage history--------------
-# ----------------------------------------------------------
-echo '--- Clear LibreOffice usage history'
-# Global installation
-rm -f ~/.config/libreoffice/4/user/registrymodifications.xcu
-# Snap package
-rm -fv ~/snap/libreoffice/*/.config/libreoffice/4/user/registrymodifications.xcu
-# Flatpak installation
-rm -fv ~/.var/app/org.libreoffice.LibreOffice/config/libreoffice/4/user/registrymodifications.xcu
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# -----------Clear Zeitgeist data (activity logs)-----------
-# ----------------------------------------------------------
-echo '--- Clear Zeitgeist data (activity logs)'
-sudo rm -rfv {/root,/home/*}/.local/share/zeitgeist
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# ------------Clear GTK recently used files list------------
-# ----------------------------------------------------------
-echo '--- Clear GTK recently used files list'
-# From global installations
-rm -fv /.recently-used.xbel
-rm -fv ~/.local/share/recently-used.xbel*
-# From snap packages
-rm -fv ~/snap/*/*/.local/share/recently-used.xbel
-# From Flatpak packages
-rm -fv ~/.var/app/*/data/recently-used.xbel
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# --------Clear KDE-tracked recently used items list--------
-# ----------------------------------------------------------
-echo '--- Clear KDE-tracked recently used items list'
-# From global installations
-rm -rfv ~/.local/share/RecentDocuments/*.desktop
-rm -rfv ~/.kde/share/apps/RecentDocuments/*.desktop
-rm -rfv ~/.kde4/share/apps/RecentDocuments/*.desktop
-# From snap packages
-rm -fv ~/snap/*/*/.local/share/*.desktop
-# From Flatpak packages
-rm -rfv ~/.var/app/*/data/*.desktop
 # ----------------------------------------------------------
 
 
@@ -235,56 +120,6 @@ if ! command -v 'az' &> /dev/null; then
 else
   az cache purge
 fi
-# ----------------------------------------------------------
-
-
-# Clear Azure login data (this will log you out of the current session)
-echo '--- Clear Azure login data (this will log you out of the current session)'
-if ! command -v 'az' &> /dev/null; then
-  echo 'Skipping because "az" is not found.'
-else
-  az logout 2&> /dev/null
-az account clear
-rm -fv ~/.azure/accessTokens.json
-fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# -------------Clear GNOME Web browsing history-------------
-# ----------------------------------------------------------
-echo '--- Clear GNOME Web browsing history'
-# ephy-history.db: Global installation
-rm -fv ~/.local/share/epiphany/ephy-history.db
-# ephy-history.db: Flatpak installation
-rm -fv ~/.var/app/org.gnome.Epiphany/data/epiphany/ephy-history.db
-# ephy-history.db: Snap installation
-rm -fv ~/snap/epiphany/*/.local/share/epiphany/ephy-history.db
-# ephy-history.db-shm: Global installation
-rm -fv ~/.local/share/epiphany/ephy-history.db-shm
-# ephy-history.db-shm: Flatpak installation
-rm -fv ~/.var/app/org.gnome.Epiphany/data/epiphany/ephy-history.db-shm
-# ephy-history.db-shm: Snap installation
-rm -fv ~/snap/epiphany/*/.local/share/epiphany/ephy-history.db-shm
-# ephy-history.db-wal: Global installation
-rm -fv ~/.local/share/epiphany/ephy-history.db-wal
-# ephy-history.db-wal: Flatpak installation
-rm -fv ~/.var/app/org.gnome.Epiphany/data/epiphany/ephy-history.db-wal
-# ephy-history.db-wal: Snap installation
-rm -fv ~/snap/epiphany/*/.local/share/epiphany/ephy-history.db-wal
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# -----------------Clear GNOME Web cookies------------------
-# ----------------------------------------------------------
-echo '--- Clear GNOME Web cookies'
-# cookies.sqlite: Global installation
-rm -fv ~/.local/share/epiphany/cookies.sqlite
-# cookies.sqlite: Flatpak installation
-rm -fv ~/.var/app/org.gnome.Epiphany/data/epiphany/cookies.sqlite
-# cookies.sqlite: Snap installation
-rm -fv ~/snap/epiphany/*/.local/share/epiphany/cookies.sqlite
 # ----------------------------------------------------------
 
 
@@ -498,16 +333,6 @@ fi
 # ----------------------------------------------------------
 
 
-# Disable online search result collection (collects queries)
-echo '--- Disable online search result collection (collects queries)'
-if ! command -v 'gsettings' &> /dev/null; then
-  echo 'Skipping because "gsettings" is not found.'
-else
-  gsettings set com.canonical.Unity.Lenses remote-content-search none
-fi
-# ----------------------------------------------------------
-
-
 # ----------------------------------------------------------
 # -------Disable participation in Popularity Contest--------
 # ----------------------------------------------------------
@@ -517,119 +342,6 @@ if [ -f "$config_file" ]; then
   sudo sed -i '/PARTICIPATE/c\PARTICIPATE=no' "$config_file"
 else
   echo "Skipping because configuration file at ($config_file) is not found. Is popcon installed?"
-fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# -------Remove Popularity Contest (`popcon`) package-------
-# ----------------------------------------------------------
-echo '--- Remove Popularity Contest (`popcon`) package'
-if ! command -v 'apt-get' &> /dev/null; then
-  echo 'Skipping because "apt-get" is not found.'
-else
-  apt_package_name='popularity-contest'
-if status="$(dpkg-query -W --showformat='${db:Status-Status}' "$apt_package_name" 2>&1)" \
-    && [ "$status" = installed ]; then
-  echo "\"$apt_package_name\" is installed and will be uninstalled."
-  sudo apt-get purge -y "$apt_package_name"
-else
-  echo "Skipping, no action needed, \"$apt_package_name\" is not installed."
-fi
-fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# -Remove daily cron entry for Popularity Contest (popcon)--
-# ----------------------------------------------------------
-echo '--- Remove daily cron entry for Popularity Contest (popcon)'
-job_name='popularity-contest'
-cronjob_path="/etc/cron.daily/$job_name"
-if [[ -f "$cronjob_path" ]]; then
-  if [[ -x "$cronjob_path" ]]; then
-    sudo chmod -x "$cronjob_path"
-    echo "Successfully disabled cronjob \"$job_name\"."
-  else
-    echo "Skipping, cronjob \"$job_name\" is already disabled."
-  fi
-else
-  echo "Skipping, \"$job_name\" cronjob is not found."
-fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# ----------------Remove `reportbug` package----------------
-# ----------------------------------------------------------
-echo '--- Remove `reportbug` package'
-if ! command -v 'apt-get' &> /dev/null; then
-  echo 'Skipping because "apt-get" is not found.'
-else
-  apt_package_name='reportbug'
-if status="$(dpkg-query -W --showformat='${db:Status-Status}' "$apt_package_name" 2>&1)" \
-    && [ "$status" = installed ]; then
-  echo "\"$apt_package_name\" is installed and will be uninstalled."
-  sudo apt-get purge -y "$apt_package_name"
-else
-  echo "Skipping, no action needed, \"$apt_package_name\" is not installed."
-fi
-fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# ----------Remove Python modules for `reportbug`-----------
-# ----------------------------------------------------------
-echo '--- Remove Python modules for `reportbug`'
-if ! command -v 'apt-get' &> /dev/null; then
-  echo 'Skipping because "apt-get" is not found.'
-else
-  apt_package_name='python3-reportbug'
-if status="$(dpkg-query -W --showformat='${db:Status-Status}' "$apt_package_name" 2>&1)" \
-    && [ "$status" = installed ]; then
-  echo "\"$apt_package_name\" is installed and will be uninstalled."
-  sudo apt-get purge -y "$apt_package_name"
-else
-  echo "Skipping, no action needed, \"$apt_package_name\" is not installed."
-fi
-fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# ----Remove UI for reportbug (`reportbug-gtk` package)-----
-# ----------------------------------------------------------
-echo '--- Remove UI for reportbug (`reportbug-gtk` package)'
-if ! command -v 'apt-get' &> /dev/null; then
-  echo 'Skipping because "apt-get" is not found.'
-else
-  apt_package_name='reportbug-gtk'
-if status="$(dpkg-query -W --showformat='${db:Status-Status}' "$apt_package_name" 2>&1)" \
-    && [ "$status" = installed ]; then
-  echo "\"$apt_package_name\" is installed and will be uninstalled."
-  sudo apt-get purge -y "$apt_package_name"
-else
-  echo "Skipping, no action needed, \"$apt_package_name\" is not installed."
-fi
-fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# ----------------Remove `pkgstats` package-----------------
-# ----------------------------------------------------------
-echo '--- Remove `pkgstats` package'
-if ! command -v 'pacman' &> /dev/null; then
-  echo 'Skipping because "pacman" is not found.'
-else
-  pkg_package_name='pkgstats'
-if pacman -Qs "$pkg_package_name" > /dev/null ; then
-  echo "\"$pkg_package_name\" is installed and will be uninstalled."
-  sudo pacman -Rcns "$pkg_package_name" --noconfirm
-else
-  echo "The package $pkg_package_name is not installed"
-fi
 fi
 # ----------------------------------------------------------
 
@@ -678,44 +390,6 @@ else
   echo 'Successfully opted out.'
 else
   >&2 echo 'Failed to opt out.'
-fi
-fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# -------Remove Ubuntu Report tool (`ubuntu-report`)--------
-# ----------------------------------------------------------
-echo '--- Remove Ubuntu Report tool (`ubuntu-report`)'
-if ! command -v 'apt-get' &> /dev/null; then
-  echo 'Skipping because "apt-get" is not found.'
-else
-  apt_package_name='ubuntu-report'
-if status="$(dpkg-query -W --showformat='${db:Status-Status}' "$apt_package_name" 2>&1)" \
-    && [ "$status" = installed ]; then
-  echo "\"$apt_package_name\" is installed and will be uninstalled."
-  sudo apt-get purge -y "$apt_package_name"
-else
-  echo "Skipping, no action needed, \"$apt_package_name\" is not installed."
-fi
-fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# -----------------Remove `apport` package------------------
-# ----------------------------------------------------------
-echo '--- Remove `apport` package'
-if ! command -v 'apt-get' &> /dev/null; then
-  echo 'Skipping because "apt-get" is not found.'
-else
-  apt_package_name='apport'
-if status="$(dpkg-query -W --showformat='${db:Status-Status}' "$apt_package_name" 2>&1)" \
-    && [ "$status" = installed ]; then
-  echo "\"$apt_package_name\" is installed and will be uninstalled."
-  sudo apt-get purge -y "$apt_package_name"
-else
-  echo "Skipping, no action needed, \"$apt_package_name\" is not installed."
 fi
 fi
 # ----------------------------------------------------------
@@ -1002,156 +676,11 @@ fi
 # ----------------------------------------------------------
 
 
-# Disable sending search queries to Microsoft in Visual Studio Code
-echo '--- Disable sending search queries to Microsoft in Visual Studio Code'
-if ! command -v 'python3' &> /dev/null; then
-  echo 'Skipping because "python3" is not found.'
-else
-  python3 <<EOF
-from pathlib import Path
-import os, json, sys
-property_name = 'workbench.settings.enableNaturalLanguageSearch'
-target = json.loads('false')
-home_dir = f'/home/{os.getenv("SUDO_USER", os.getenv("USER"))}'
-settings_files = [
-  # Global installation (also Snap that installs with "--classic" flag)
-  f'{home_dir}/.config/Code/User/settings.json',
-  # Flatpak installation
-  f'{home_dir}/.var/app/com.visualstudio.code/config/Code/User/settings.json'
-]
-for settings_file in settings_files:
-  file=Path(settings_file)
-  if not file.is_file():
-    print(f'Skipping, file does not exist at "{settings_file}".')
-    continue
-  print(f'Reading file at "{settings_file}".')
-  file_content = file.read_text()
-  if not file_content.strip():
-    print('Settings file is empty. Treating it as default empty JSON object.')
-    file_content = '{}'
-  json_object = None
-  try:
-    json_object = json.loads(file_content)
-  except json.JSONDecodeError:
-    print(f'Error, invalid JSON format in the settings file: "{settings_file}".', file=sys.stderr)
-    continue
-  if property_name not in json_object:
-    print(f'Settings "{property_name}" is not configured.')
-  else:
-    existing_value = json_object[property_name]
-    if existing_value == target:
-      print(f'Skipping, "{property_name}" is already configured as {json.dumps(target)}.')
-      continue
-    print(f'Setting "{property_name}" has unexpected value {json.dumps(existing_value)} that will be changed.')
-  json_object[property_name] = target
-  new_content = json.dumps(json_object, indent=2)
-  file.write_text(new_content)
-  print(f'Successfully configured "{property_name}" to {json.dumps(target)}.')
-EOF
-fi
-# ----------------------------------------------------------
-
-
-# Disable automatic fetching of Microsoft recommendations in Visual Studio Code
-echo '--- Disable automatic fetching of Microsoft recommendations in Visual Studio Code'
-if ! command -v 'python3' &> /dev/null; then
-  echo 'Skipping because "python3" is not found.'
-else
-  python3 <<EOF
-from pathlib import Path
-import os, json, sys
-property_name = 'extensions.showRecommendationsOnlyOnDemand'
-target = json.loads('true')
-home_dir = f'/home/{os.getenv("SUDO_USER", os.getenv("USER"))}'
-settings_files = [
-  # Global installation (also Snap that installs with "--classic" flag)
-  f'{home_dir}/.config/Code/User/settings.json',
-  # Flatpak installation
-  f'{home_dir}/.var/app/com.visualstudio.code/config/Code/User/settings.json'
-]
-for settings_file in settings_files:
-  file=Path(settings_file)
-  if not file.is_file():
-    print(f'Skipping, file does not exist at "{settings_file}".')
-    continue
-  print(f'Reading file at "{settings_file}".')
-  file_content = file.read_text()
-  if not file_content.strip():
-    print('Settings file is empty. Treating it as default empty JSON object.')
-    file_content = '{}'
-  json_object = None
-  try:
-    json_object = json.loads(file_content)
-  except json.JSONDecodeError:
-    print(f'Error, invalid JSON format in the settings file: "{settings_file}".', file=sys.stderr)
-    continue
-  if property_name not in json_object:
-    print(f'Settings "{property_name}" is not configured.')
-  else:
-    existing_value = json_object[property_name]
-    if existing_value == target:
-      print(f'Skipping, "{property_name}" is already configured as {json.dumps(target)}.')
-      continue
-    print(f'Setting "{property_name}" has unexpected value {json.dumps(existing_value)} that will be changed.')
-  json_object[property_name] = target
-  new_content = json.dumps(json_object, indent=2)
-  file.write_text(new_content)
-  print(f'Successfully configured "{property_name}" to {json.dumps(target)}.')
-EOF
-fi
-# ----------------------------------------------------------
-
-
 # ----------------------------------------------------------
 # ------------Enable Firefox tracking protection------------
 # ----------------------------------------------------------
 echo '--- Enable Firefox tracking protection'
 pref_name='privacy.trackingprotection.enabled'
-pref_value='true'
-echo "Setting preference \"$pref_name\" to \"$pref_value\"."
-declare -a profile_paths=(
-  ~/.mozilla/firefox/*/
-  ~/.var/app/org.mozilla.firefox/.mozilla/firefox/*/
-  ~/snap/firefox/common/.mozilla/firefox/*/
-)
-declare -i total_profiles_found=0
-for profile_dir in "${profile_paths[@]}"; do
-  if [ ! -d "$profile_dir" ]; then
-    continue
-  fi
-  if [[ ! "$(basename "$profile_dir")" =~ ^[a-z0-9]{8}\..+ ]]; then
-    continue # Not a profile folder
-  fi
-  ((total_profiles_found++))
-  user_js_file="${profile_dir}user.js"
-  echo "$user_js_file:"
-  if [ ! -f "$user_js_file" ]; then
-    touch "$user_js_file"
-    echo $'\t''Created new user.js file'
-  fi
-  pref_start="user_pref(\"$pref_name\","
-  pref_line="user_pref(\"$pref_name\", $pref_value);"
-  if ! grep --quiet "^$pref_start" "${user_js_file}"; then
-    echo -n $'\n'"$pref_line" >> "$user_js_file"
-    echo $'\t'"Successfully added a new preference in $user_js_file."
-  elif grep --quiet "^$pref_line$" "$user_js_file"; then
-    echo $'\t'"Skipping, preference is already set as expected in $user_js_file."
-  else
-    sed --in-place "/^$pref_start/c\\$pref_line" "$user_js_file"
-    echo $'\t'"Successfully replaced the existing incorrect preference in $user_js_file."
-  fi
-done
-if [ "$total_profiles_found" -eq 0 ]; then
-  echo 'No profile folders are found, no changes are made.'
-else
-  echo "Successfully verified preferences in $total_profiles_found profiles."
-fi
-# ----------------------------------------------------------
-
-
-# Enable Firefox anti-fingerprinting (may break some websites)
-echo '--- Enable Firefox anti-fingerprinting (may break some websites)'
-pref_name='privacy.resistFingerprinting'
 pref_value='true'
 echo "Setting preference \"$pref_name\" to \"$pref_value\"."
 declare -a profile_paths=(
@@ -1619,53 +1148,6 @@ fi
 echo '--- Enable Firefox network partitioning'
 pref_name='privacy.partition.network_state'
 pref_value='true'
-echo "Setting preference \"$pref_name\" to \"$pref_value\"."
-declare -a profile_paths=(
-  ~/.mozilla/firefox/*/
-  ~/.var/app/org.mozilla.firefox/.mozilla/firefox/*/
-  ~/snap/firefox/common/.mozilla/firefox/*/
-)
-declare -i total_profiles_found=0
-for profile_dir in "${profile_paths[@]}"; do
-  if [ ! -d "$profile_dir" ]; then
-    continue
-  fi
-  if [[ ! "$(basename "$profile_dir")" =~ ^[a-z0-9]{8}\..+ ]]; then
-    continue # Not a profile folder
-  fi
-  ((total_profiles_found++))
-  user_js_file="${profile_dir}user.js"
-  echo "$user_js_file:"
-  if [ ! -f "$user_js_file" ]; then
-    touch "$user_js_file"
-    echo $'\t''Created new user.js file'
-  fi
-  pref_start="user_pref(\"$pref_name\","
-  pref_line="user_pref(\"$pref_name\", $pref_value);"
-  if ! grep --quiet "^$pref_start" "${user_js_file}"; then
-    echo -n $'\n'"$pref_line" >> "$user_js_file"
-    echo $'\t'"Successfully added a new preference in $user_js_file."
-  elif grep --quiet "^$pref_line$" "$user_js_file"; then
-    echo $'\t'"Skipping, preference is already set as expected in $user_js_file."
-  else
-    sed --in-place "/^$pref_start/c\\$pref_line" "$user_js_file"
-    echo $'\t'"Successfully replaced the existing incorrect preference in $user_js_file."
-  fi
-done
-if [ "$total_profiles_found" -eq 0 ]; then
-  echo 'No profile folders are found, no changes are made.'
-else
-  echo "Successfully verified preferences in $total_profiles_found profiles."
-fi
-# ----------------------------------------------------------
-
-
-# ----------------------------------------------------------
-# ---Disable outdated Firefox First-Party Isolation (FPI)---
-# ----------------------------------------------------------
-echo '--- Disable outdated Firefox First-Party Isolation (FPI)'
-pref_name='privacy.firstparty.isolate'
-pref_value='false'
 echo "Setting preference \"$pref_name\" to \"$pref_value\"."
 declare -a profile_paths=(
   ~/.mozilla/firefox/*/
