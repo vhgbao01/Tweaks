@@ -1,114 +1,78 @@
 @echo off
+setlocal EnableExtensions EnableDelayedExpansion
 
-:: Ensure admin privileges
+:: ----------------------------------------------------------
+:: Admin check
+:: ----------------------------------------------------------
 fltmc >nul 2>&1 || (
-    echo Administrator privileges are required.
-    PowerShell Start -Verb RunAs '%0' 2> nul || (
-        echo Right-click on the script and select "Run as administrator".
-        pause & exit 1
-    )
-    exit 0
+    powershell -Command "Start-Process '%~f0' -Verb RunAs"
+    exit /b
 )
 
-:: Initialize environment
-setlocal EnableExtensions DisableDelayedExpansion
+:: ----------------------------------------------------------
+:: Install Chocolatey
+:: ----------------------------------------------------------
+echo Installing Chocolatey...
 
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+"Set-ExecutionPolicy Bypass -Scope Process -Force; ^
+[System.Net.ServicePointManager]::SecurityProtocol = ^
+[System.Net.ServicePointManager]::SecurityProtocol -bor 3072; ^
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
 
+call "%ProgramData%\chocolatey\bin\refreshenv.cmd"
 
 :: ----------------------------------------------------------
-:: ----------Install Chocolatey------------------------------
+:: Package selection
 :: ----------------------------------------------------------
-echo --- Install Chocolatey
-PowerShell -NoProfile -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
-call refreshenv
-PowerShell -NoProfile -Command "Set-ExecutionPolicy RemoteSigned -Force"
-echo.
+set "PACKAGES="
 
-set /p confirm="Do you want to install Chocolatey helpers (GUI, cleaner, sudo)? (y/n): "
-if /i "%confirm%"=="y" (
-    echo --- Install Chocolatey helpers
-    choco upgrade chocolateygui choco-cleaner gsudo -y --no-progress
-) else (
-    echo Skipping Chocolatey helpers.
+set /p confirm="Install Chocolatey helpers? (y/n): "
+if /i "!confirm!"=="y" (
+    set "PACKAGES=!PACKAGES! chocolateygui choco-cleaner gsudo"
 )
-echo.
 
-
-
-:: ----------------------------------------------------------
-:: ----------Install system packages-------------------------
-:: ----------------------------------------------------------
-set /p confirm="Do you want to install system runtime packages (DirectX, VC++ Redist)? (y/n): "
-if /i "%confirm%"=="y" (
-    echo --- Install system runtimes
-    choco upgrade directx vcredist-all -y --no-progress
-) else (
-    echo Skipping system packages.
+set /p confirm="Install runtimes (DirectX, VC++ Redist Full)? (y/n): "
+if /i "!confirm!"=="y" (
+    set "PACKAGES=!PACKAGES! directx vcredist-all"
 )
-echo.
 
-
-
-:: ----------------------------------------------------------
-:: ----------Install multimedia packages---------------------
-:: ----------------------------------------------------------
-set /p confirm="Do you want to install multimedia and archiving packages (K-Lite, WinRAR, 7zip)? (y/n): "
-if /i "%confirm%"=="y" (
-    echo --- Install multimedia and archiving tools
-    choco upgrade k-litecodecpackfull winrar 7zip -y --no-progress
-) else (
-    echo Skipping multimedia packages.
+set /p confirm="Install driver tools (Snappy Driver Installer)? (y/n): "
+if /i "!confirm!"=="y" (
+    set "PACKAGES=!PACKAGES! sdio"
 )
-echo.
 
-
-
-:: ----------------------------------------------------------
-:: ----------Install developer packages----------------------
-:: ----------------------------------------------------------
-set /p confirm="Do you want to install developer packages? (y/n): "
-if /i "%confirm%"=="y" (
-    echo --- Install PSReadLine
-    PowerShell -NoProfile -Command "Install-Module -Name PSReadLine -Force -Confirm:$false -ErrorAction SilentlyContinue"
-    echo.
-
-    set /p subconfirm="Install core dev tools (VSCode, Git, GitHub Desktop, Python, Node.js LTS, .NET SDK)? (y/n): "
-    if /i "%subconfirm%"=="y" (
-        echo --- Install core dev tools
-        choco upgrade vscode git github-desktop python nodejs.lts dotnet-sdk -y --no-progress
-    ) else (
-        echo Skipping core dev tools.
-    )
-    echo.
-
-    set /p subconfirm="Install virtualization packages (Docker Desktop, WSL2)? Warning: These are heavy and slow. (y/n): "
-    if /i "%subconfirm%"=="y" (
-        echo --- Install Docker Desktop
-        choco upgrade docker-desktop -y --no-progress
-
-        echo --- Install WSL2 via Windows feature (recommended over choco)
-        PowerShell -NoProfile -Command "wsl --install --no-distribution" 2>nul || (
-            echo WSL2 install via wsl --install failed, falling back to choco...
-            choco upgrade wsl2 -y --no-progress
-        )
-    ) else (
-        echo Skipping virtualization packages.
-    )
-) else (
-    echo Skipping developer packages.
+set /p confirm="Install multimedia tools (K-Lite Codec Pack Standard, WinRAR, 7-Zip)? (y/n): "
+if /i "!confirm!"=="y" (
+    set "PACKAGES=!PACKAGES! k-litecodecpack-standard winrar 7zip"
 )
+
+set /p confirm="Install core dev tools? (y/n): "
+if /i "!confirm!"=="y" (
+    set "PACKAGES=!PACKAGES! vscode git github-desktop python nodejs.lts dotnet-sdk"
+)
+
+set /p confirm="Install virtualization tools (Docker Desktop, WSL2)? (Warning: Heavy and slow) (y/n): "
+if /i "!confirm!"=="y" (
+    set "PACKAGES=!PACKAGES! docker-desktop"
+    powershell -NoProfile -Command "wsl --install --no-distribution"
+)
+
+echo.
+echo Selected packages:
+echo !PACKAGES!
 echo.
 
-
+set /p confirm="Proceed with installation? (y/n): "
+if /i not "!confirm!"=="y" exit /b
 
 :: ----------------------------------------------------------
-:: ----------Upgrade all packages----------------------------
+:: Install all packages
 :: ----------------------------------------------------------
-echo --- Upgrading all installed Chocolatey packages...
-choco upgrade all -y --no-progress
-echo.
+if defined PACKAGES (
+    choco upgrade !PACKAGES! -y --no-progress
+)
 
-:: Pause to view result
 pause
 endlocal
 exit /b 0
