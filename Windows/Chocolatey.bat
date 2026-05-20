@@ -20,7 +20,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command ^
 [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; ^
 iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
 
-call "%ProgramData%\chocolatey\bin\refreshenv.cmd"
+:: Add Chocolatey to permanent PATH if missing
+echo %PATH% | find /I "%ALLUSERSPROFILE%\chocolatey\bin" >nul
+if errorlevel 1 (
+    setx PATH "%PATH%;%ALLUSERSPROFILE%\chocolatey\bin" /M >nul
+)
+
+call "%ALLUSERSPROFILE%\chocolatey\bin\refreshenv.cmd"
 
 :: ----------------------------------------------------------
 :: Package selection
