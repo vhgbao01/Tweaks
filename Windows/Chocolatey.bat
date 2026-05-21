@@ -55,7 +55,7 @@ if /i "!confirm!"=="y" (
 
 set /p confirm="Install core dev tools? (y/n): "
 if /i "!confirm!"=="y" (
-    set "PACKAGES=!PACKAGES! vscode git github-desktop python nodejs.lts dotnet-sdk"
+    set "PACKAGES=!PACKAGES! vscode git github-desktop python nodejs-lts dotnet-sdk"
 )
 
 set /p confirm="Install virtualization tools (Docker Desktop, WSL2)? (Warning: Heavy and slow) (y/n): "
@@ -78,6 +78,8 @@ if /i not "!confirm!"=="y" exit /b
 if defined PACKAGES (
     choco upgrade !PACKAGES! -y --no-progress
 )
+
+choco-cleaner
 
 pause
 endlocal
