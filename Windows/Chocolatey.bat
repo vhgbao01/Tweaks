@@ -33,7 +33,7 @@ call "%ALLUSERSPROFILE%\chocolatey\bin\refreshenv.cmd"
 :: ----------------------------------------------------------
 set "PACKAGES="
 
-set /p confirm="Install Chocolatey helpers? (y/n): "
+set /p confirm="Install Chocolatey helpers (GUI, choco-cleaner, sudo)? (y/n): "
 if /i "!confirm!"=="y" (
     set "PACKAGES=!PACKAGES! chocolateygui choco-cleaner gsudo"
 )
@@ -53,12 +53,12 @@ if /i "!confirm!"=="y" (
     set "PACKAGES=!PACKAGES! k-litecodecpack-standard winrar 7zip"
 )
 
-set /p confirm="Install core dev tools? (y/n): "
+set /p confirm="Install core dev tools (VSCode, Git, Github Desktop, Python, NodeJS, .NET SDK)? (y/n): "
 if /i "!confirm!"=="y" (
     set "PACKAGES=!PACKAGES! vscode git github-desktop python nodejs-lts dotnet-sdk"
 )
 
-set /p confirm="Install virtualization tools (Docker Desktop, WSL2)? (Warning: Heavy and slow) (y/n): "
+set /p confirm="Install virtualization tools (Docker Desktop, WSL)? (Warning: Heavy and slow) (y/n): "
 if /i "!confirm!"=="y" (
     set "PACKAGES=!PACKAGES! docker-desktop"
     powershell -NoProfile -Command "wsl --install --no-distribution"
